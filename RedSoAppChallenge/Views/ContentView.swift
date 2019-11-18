@@ -11,17 +11,21 @@ import UIKit
 class ContentView: UIView {
 
     var teams = ["rangers","elastic","dynamo"];
-    var selectedTeamIndex:Int = 0
+    //var selectedTeamIndex:Int = 0
     var loadingPage:Int = 0
     
     var data = [CatalogModel]()
     let tableView = UITableView()
     var refreshControl:UIRefreshControl!
-    let loadingView = UILabel(fontSize: 18, color: UIColor.white, str: "Loading...")
+    let loadingView = UILabel(fontSize: KEY_FONT_SIZE, color: UIColor.white, str: "Loading...")
     var isLoading:Bool = false
+    var teamIndex:Int!
     
-    override init(frame: CGRect) {
+    init(withTeamIndex index:Int) {
+    //override init(frame: CGRect) {
         super.init(frame: CGRect.zero)
+        
+        self.teamIndex = index
         
         tableView.register(EmployeeCell.classForCoder(), forCellReuseIdentifier: "EmployeeCell")
         tableView.register(BannerCell.classForCoder(), forCellReuseIdentifier: "BannerCell")
@@ -49,22 +53,27 @@ class ContentView: UIView {
         loadingView.textAlignment = .center
         loadingView.isHidden = true
         
-        
     }
     
-    func changeTab(index:Int) {
-        self.selectedTeamIndex = index
-        self.loadingPage = 0
-        self.data.removeAll()
-        self.tableView.reloadData()
-        self.loadingView.isHidden = self.data.count > 0
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            self.loadData()
-        }
-    }
+//    func changeTab(index:Int) {
+//        self.selectedTeamIndex = index
+//        self.loadingPage = 0
+//        self.data.removeAll()
+//        self.tableView.reloadData()
+//        self.loadingView.isHidden = self.data.count > 0
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+//            self.loadData()
+//        }
+//    }
     
     @objc func reloadData() {
         self.loadData(isReload: true)
+    }
+    
+    func initData() {
+        if self.data.count == 0 {
+            self.loadData()
+        }
     }
     
     func loadData(isReload:Bool=false) {
@@ -73,7 +82,7 @@ class ContentView: UIView {
             self.loadingPage = 0
         }
         self.isLoading = true
-        APIHelper.loadCatalog(withTeam: self.teams[self.selectedTeamIndex], page: self.loadingPage, completion: {
+        APIHelper.loadCatalog(withTeam: self.teams[teamIndex], page: self.loadingPage, completion: {
             result in
             if result.count > 0 {
                 self.loadingPage += 1
@@ -132,7 +141,6 @@ extension ContentView: UITableViewDelegate, UITableViewDataSource {
         }
         return UITableViewCell()
     }
-    
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let offsetY = scrollView.contentOffset.y
         let contentHeight = scrollView.contentSize.height
@@ -142,5 +150,4 @@ extension ContentView: UITableViewDelegate, UITableViewDataSource {
             }
         }
     }
-    
 }

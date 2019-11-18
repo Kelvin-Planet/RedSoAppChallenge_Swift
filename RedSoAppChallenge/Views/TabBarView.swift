@@ -10,9 +10,9 @@ import UIKit
 
 class TabBarView: UIView {
 
-    var list = [UILabel(fontSize: 18, color: UIColor.white, str: "Rangers"),
-                UILabel(fontSize: 18, color: UIColor.white, str: "Elastic"),
-                UILabel(fontSize: 18, color: UIColor.white, str: "Dynamo")]
+    var list = [UILabel(fontSize: KEY_FONT_SIZE, color: UIColor.white, str: "Rangers"),
+                UILabel(fontSize: KEY_FONT_SIZE, color: UIColor.white, str: "Elastic"),
+                UILabel(fontSize: KEY_FONT_SIZE, color: UIColor.white, str: "Dynamo")]
     var redLine:UIView!
     var didTap:((Int)->())!
     
@@ -25,9 +25,9 @@ class TabBarView: UIView {
             self.addSubview(tabItem)
             tabItem.snp.makeConstraints({ make in
                 if holder == nil {
-                    make.leading.equalToSuperview().offset(20)
+                    make.leading.equalToSuperview().offset(KEY_MARGIN)
                 }else{
-                    make.leading.equalTo(holder.snp.trailing).offset(20)
+                    make.leading.equalTo(holder.snp.trailing).offset(KEY_MARGIN)
                 }
                 make.top.bottom.equalToSuperview()
             })

@@ -52,20 +52,4 @@ class EmployeeModel: CatalogModel {
             self.avatar = avatar
         }
     }
-    func calculateCellHeight() -> CGFloat {
-        var height:CGFloat = 20
-        let boxWidth:CGFloat = sw-20-80-20-20
-        var lb = UILabel(fontSize: 18, color: UIColor.white, str: self.name)
-        height += lb.sizeThatFits(CGSize(width: boxWidth, height: CGFloat.greatestFiniteMagnitude)).height
-        height += 20
-        lb = UILabel(fontSize: 18, color: UIColor.white, str: self.position)
-        height += lb.sizeThatFits(CGSize(width: boxWidth, height: CGFloat.greatestFiniteMagnitude)).height
-        height += 20
-        lb = UILabel(fontSize: 18, color: UIColor.white, str: self.expertise.joined(separator: ", "))
-        lb.numberOfLines = 0
-        lb.lineBreakMode = .byWordWrapping
-        height += lb.sizeThatFits(CGSize(width: boxWidth, height: CGFloat.greatestFiniteMagnitude)).height
-        height += 40
-        return height
-    }
 }

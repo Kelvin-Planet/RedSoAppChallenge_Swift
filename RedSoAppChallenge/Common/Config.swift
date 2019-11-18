@@ -3,6 +3,9 @@ import UIKit
 let sw = UIScreen.main.bounds.width //SCREEN_WIDTH
 let sh = UIScreen.main.bounds.height //SCREEN_HEIGHT
 
+let KEY_MARGIN:CGFloat = 20.0
+let KEY_FONT_SIZE:CGFloat = 18.0
+
 var statusBarH:CGFloat = UIApplication.shared.statusBarFrame.size.height
 var bottomPadding:CGFloat = {
     if #available(iOS 11.0, *) {

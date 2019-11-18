@@ -11,8 +11,12 @@ import Kingfisher
 
 class HomeViewController: UIViewController {
     
-    let contentView = ContentView()
-    let contents = [ContentView()]
+    //let contentView = ContentView()
+    let contents = [ContentView(withTeamIndex: 0),
+                    ContentView(withTeamIndex: 1),
+                    ContentView(withTeamIndex: 2)]
+    let tapBar = TabBarView()
+    let sv = UIScrollView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,7 +33,6 @@ class HomeViewController: UIViewController {
             make.height.equalTo(60)
         })
         
-        let tapBar = TabBarView()
         self.view.addSubview(tapBar)
         tapBar.snp.makeConstraints({ make in
             make.top.equalTo(headerLogo.snp.bottom)
@@ -38,11 +41,12 @@ class HomeViewController: UIViewController {
         })
         tapBar.didTap = {
             index in
-            tapBar.setActiveIndex(index: index)
-            self.contents[0].changeTab(index: index)
+            self.tapBar.setActiveIndex(index: index)
+            //self.contents[0].changeTab(index: index)
+            self.scrollToPage(index)
+            self.contents[index].initData()
         }
         
-        let sv = UIScrollView()
         self.view.addSubview(sv)
         sv.snp.makeConstraints({ make in
             make.top.equalTo(tapBar.snp.bottom)
@@ -79,7 +83,7 @@ class HomeViewController: UIViewController {
             make.trailing.equalToSuperview()
         })
         
-        contents[0].loadData()
+        contents[0].initData()
         
 //        self.view.addSubview(contentView)
 //        contentView.snp.makeConstraints({ make in
@@ -91,7 +95,10 @@ class HomeViewController: UIViewController {
         
     }
     
-
+    func changeTab(toIndex index:Int) {
+        self.tapBar.setActiveIndex(index: index)
+        self.contents[index].initData()
+    }
     
 }
 
@@ -103,6 +110,12 @@ extension HomeViewController: UIScrollViewDelegate {
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         let currentPage = scrollView.currentPage
         print("scrollViewDidEndDecelerating: \(currentPage)")
+        self.changeTab(toIndex: currentPage-1)
+    }
+    func scrollToPage(_ page: Int) {
+        UIView.animate(withDuration: 0.3) {
+            self.sv.contentOffset.x = self.sv.frame.width * CGFloat(page)
+        }
     }
 }
 
